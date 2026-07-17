@@ -20,3 +20,10 @@ module "network_interface" {
   source              = "../../Module/Azurerm_network_interface_card"
   network_interfaces  = var.network_interfaces
 }
+
+
+module "key_vault" {
+  depends_on = [module.resource_group]
+  source              = "../../Module/Azure_Key_Vault"
+  key_vaults          = var.key_vaults
+}

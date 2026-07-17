@@ -47,3 +47,12 @@ network_interfaces = {
     ]
   }
 }
+
+key_vaults = {
+  "kv1" = {
+    name                = "Todo-key-vault"
+    location            = "Central US"
+    resource_group_name = "Keyvault-RG"
+    sku_name            = "standard"
+  }
+}
