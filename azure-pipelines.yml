@@ -40,9 +40,10 @@ stages:
           environmentServiceNameAzureRM: 'Docker-VM-Connection'
           environmentAzureRmOverrideSubscriptionID: '0f8f3a03-1fbc-4587-9442-3a42f6948e4e'
           workingDirectory: '$(System.DefaultWorkingDirectory)/Environments/Dev'
+          commandOptions: '-out=$(Build.ArtifactStagingDirectory)/tfplan'
   - stage: Terraform_Code_Scannig
     displayName: Scanning Stage
-    dependsOn: Approval
+    dependsOn: Terraform_Initial_Validation
     jobs:
     - job: 
       displayName: Scanning
@@ -78,7 +79,7 @@ stages:
           script: 'tfsec "$(System.DefaultWorkingDirectory)"'
   - stage: Approval
     displayName: "Production Approval"
-    dependsOn: Terraform_Initial_Validation
+    dependsOn: Terraform_Code_Scannig
     jobs:
     - job: 
       displayName: "Production Approval"
@@ -89,3 +90,16 @@ stages:
         inputs:
           notifyUsers: 'yadavbrijendra20091994@gmail.com'
           instructions: 'Please review the Terraform Plan artifact. Approve only if the Terraform changes are expected.'
+  - stage: Publish_Artifact
+    displayName: Publish Artifact
+    dependsOn: Approval
+    condition: succeeded ()
+    jobs:
+    - job:
+      displayName: "Publish Terraform Plan Artifact"
+      steps:
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(Build.ArtifactStagingDirectory)/tfplan'
+          artifact: 'terraform-plan'
+          publishLocation: 'pipeline'
