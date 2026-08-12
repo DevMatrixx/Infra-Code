@@ -44,10 +44,6 @@ stages:
       displayName: Terraform Plan
       steps:
 
-      - task: TerraformInstaller@1
-        inputs:
-          terraformVersion: 'latest'
-
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
@@ -58,8 +54,8 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            cd $(Pipeline.Workspace)
-            chmod -R a+rx .terraform/providers
+            cd $(Pipeline.Workspace)/
+            chmod -R a+rx /Environments/Dev/.terraform/providers
       
       - task: TerraformTask@5
         displayName: Plan
