@@ -1,20 +1,20 @@
 terraform {
-    required_providers {
-        azurerm = {
-            source = "hashicorp/azurerm"
-            version = "4.75.0"
-        }
+  required_version = ">= 1.5.0"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "4.75.0"
     }
-        backend "azurerm" {
-            storage_account_name = "brijendrastoragel"
-            resource_group_name = "Todoapp-RG"
-            container_name = "starbuckscontainer"
-            key = "terraform.tfstate"
-
-        }
-    
+  }
+  backend "azurerm" {
+    resource_group_name  = "rg-terraform-state"
+    storage_account_name = "bkstterraformstate"
+    container_name       = "tfstate"
+    key                  = "Dev.tfstate"
+  }
 }
-provider "azurerm"{
-    features {}
-    subscription_id = "ba58d5e6-0957-437c-9efe-dc7469a93475"
+
+provider "azurerm" {
+  features {}
+  subscription_id = "0f8f3a03-1fbc-4587-9442-3a42f6948e4e"
 }

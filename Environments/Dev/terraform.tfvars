@@ -1,8 +1,8 @@
 resource_groups = {
   "rg1" = {
-    rg-name       = "Todo-resource-group"
-    rg-location   = "East US"
-    rg-tags       = {
+    rg-name     = "Todo-resource-group"
+    rg-location = "East US"
+    rg-tags = {
       environment = "dev"
       project     = "Todoproject"
     }
@@ -54,5 +54,45 @@ key_vaults = {
     location            = "Central US"
     resource_group_name = "Keyvault-RG"
     sku_name            = "standard"
+  }
+}
+
+key_vault_secrets = {
+  "vm_admin_pass" = {
+    name                = "vm-admin-password"
+    value               = "P@ssw0rd12345!"
+    key_vault_name      = "Todo-key-vault"
+    resource_group_name = "Keyvault-RG"
+  },
+  "vm_admin_user" = {
+    name                = "vm-admin-user"
+    value               = "azureuser"
+    key_vault_name      = "Todo-key-vault"
+    resource_group_name = "Keyvault-RG"
+  }
+}
+
+virtual_machines = {
+  "vm1" = {
+    name                       = "Frontend-vm"
+    location                   = "East US"
+    resource_group_name        = "Todo-resource-group"
+    size                       = "Standard_B1s"
+    admin_username             = "azureuser"
+    key_vault_name             = "Todo-key-vault"
+    admin_password_secret_name = "vm-admin-password"
+    nic_name                   = "Frontend-nic"
+    nic_resource_group_name    = "Todo-resource-group"
+    publisher                  = "Canonical"
+    offer                      = "0001-com-ubuntu-server-jammy"
+    sku                        = "22_04-lts"
+    version                    = "latest"
+    os_disk_name               = "Frontend-vm-osdisk"
+    caching                    = "ReadWrite"
+    storage_account_type       = "Standard_LRS"
+    tags = {
+      environment = "dev"
+      project     = "Todoproject"
+    }
   }
 }
