@@ -18,3 +18,10 @@ stages:
           script: |
             Invoke-WebRequest -Uri "https://github.com/biomejs/biome/releases/download/%40biomejs%2Fbiome%402.3.8/biome-win32-x64.exe" -OutFile "$(Agent.ToolsDirectory)/biome.exe"
             $(Agent.ToolsDirectory)/biome.exe lint $(System.DefaultWorkingDirectory)/home/ubuntu/agent/_work/_tool/biome.exe lint . 
+      
+      - task: PowerShell@2
+        displayName: 'Checkov Terraform Security Scan'
+        inputs:
+          targetType: 'inline'
+          script: |
+            checkov -d "$(System.DefaultWorkingDirectory)" --framework terraform
