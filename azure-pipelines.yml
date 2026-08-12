@@ -1,0 +1,18 @@
+trigger: none
+
+pool: AWSAgnet-Pool
+
+stages:
+  - stage:
+    displayName: Scanning Stage
+    jobs:
+    - job: 
+      displayName: Scanning
+      continueOnError: true
+      steps:
+      - task: PowerShell@2
+        displayName: Biome Lint
+        continueOnError: true
+        inputs:
+          targetType: 'inline'
+          script: 'Invoke-WebRequest -Uri "https://github.com/biomejs/biome/releases/download/%40biomejs%2Fbiome%402.5.8/biome-linux-arm64" -OutFile "$(agent_toolsDirectory)/biome.exe lint $(System.DefaultWorkingDirectory)/home/ubuntu/agent/_work/_tool/biome.exe lint . " '
