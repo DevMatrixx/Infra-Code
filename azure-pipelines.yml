@@ -38,22 +38,6 @@ stages:
           command: 'plan'
           environmentServiceNameAzureRM: 'TodoAI-Service-Connection'
           environmentAzureRmOverrideSubscriptionID: '0f8f3a03-1fbc-4587-9442-3a42f6948e4e'
-  
-  - stage: Approval
-    displayName: "Production Approval"
-    dependsOn: Terraform_Initial_Validation
-    jobs:
-    - job: 
-      displayName: "Production Approval"
-      pool: server
-      timeoutInMinutes: 140
-      steps:    
-      - task: ManualValidation@1
-        inputs:
-          notifyUsers: 'yadavbrijendra20091994@gmail.com'
-          approvers: 'brijendrayadav2009@gmail.com'
-          instructions: 'Please review the Terraform Plan artifact. Approve only if the Terraform changes are expected.'
-
   - stage: Terraform_Code_Scannig
     displayName: Scanning Stage
     dependsOn: Approval
@@ -90,3 +74,17 @@ stages:
         inputs:
           targetType: 'inline'
           script: 'tfsec "$(System.DefaultWorkingDirectory)"'
+  - stage: Approval
+    displayName: "Production Approval"
+    dependsOn: Terraform_Initial_Validation
+    jobs:
+    - job: 
+      displayName: "Production Approval"
+      pool: server
+      timeoutInMinutes: 140
+      steps:    
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: 'yadavbrijendra20091994@gmail.com'
+          approvers: 'brijendrayadav2009@gmail.com'
+          instructions: 'Please review the Terraform Plan artifact. Approve only if the Terraform changes are expected.'
