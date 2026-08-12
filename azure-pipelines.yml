@@ -28,7 +28,7 @@ stages:
       
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/Environments/Dev'
+          targetPath: '$(System.DefaultWorkingDirectory)/Terraform'
           artifact: 'terraform-configuration'
           publishLocation: 'pipeline'
 
