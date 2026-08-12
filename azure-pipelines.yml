@@ -24,4 +24,4 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            checkov -d "$(System.DefaultWorkingDirectory)" --framework terraform
+            /home/azureuser/.local/bin/checkov -d "$(System.DefaultWorkingDirectory)" --framework terraform
