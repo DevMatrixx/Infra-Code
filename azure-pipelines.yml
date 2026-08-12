@@ -18,6 +18,7 @@ stages:
         inputs:
           provider: 'azurerm'
           command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Environments/Dev'
           backendServiceArm: 'TodoAI-Service-Connection'
           backendAzureRmOverrideSubscriptionID: '0f8f3a03-1fbc-4587-9442-3a42f6948e4e'
           backendAzureRmResourceGroupName: 'rg-terraform-state'
