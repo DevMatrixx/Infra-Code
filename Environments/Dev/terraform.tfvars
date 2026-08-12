@@ -59,14 +59,8 @@ key_vaults = {
 
 key_vault_secrets = {
   "vm_admin_pass" = {
-    name                = "vm-admin-password"
-    value               = "P@ssw0rd12345!"
-    key_vault_name      = "Todo-key-vault"
-    resource_group_name = "Keyvault-RG"
-  },
-  "vm_admin_user" = {
     name                = "vm-admin-user"
-    value               = "azureuser"
+    value               = "vm-admin-password"
     key_vault_name      = "Todo-key-vault"
     resource_group_name = "Keyvault-RG"
   }

@@ -5,6 +5,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.75.0"
     }
+
   }
   backend "azurerm" {
     resource_group_name  = "rg-terraform-state"
@@ -13,7 +14,6 @@ terraform {
     key                  = "Dev.tfstate"
   }
 }
-
 provider "azurerm" {
   features {}
   subscription_id = "0f8f3a03-1fbc-4587-9442-3a42f6948e4e"

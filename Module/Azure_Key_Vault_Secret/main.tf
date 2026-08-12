@@ -12,6 +12,7 @@ resource "azurerm_key_vault_secret" "secret" {
   for_each     = var.key_vault_secrets
   name         = each.value.name
   value        = each.value.value
+  expiration_date = "2027-08-12T00:00:00Z"
   key_vault_id = each.value.key_vault_id != null ? each.value.key_vault_id : data.azurerm_key_vault.kv[each.key].id
   content_type = each.value.content_type
   tags         = each.value.tags

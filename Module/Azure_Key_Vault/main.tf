@@ -5,7 +5,19 @@ resource "azurerm_key_vault" "vault" {
   resource_group_name        = each.value.resource_group_name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 7
+  purge_protection_enabled = true
+  public_network_access_enabled = true
   sku_name                   = each.value.sku_name
+
+
+  network_acls {
+    default_action = "Deny"
+    bypass         = "None"
+
+    ip_rules = [
+      "20.94.196.105"
+    ]
+  }
 
   access_policy {
     tenant_id = data.azurerm_client_config.current.tenant_id
