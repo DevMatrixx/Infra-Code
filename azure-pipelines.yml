@@ -82,11 +82,10 @@ stages:
     jobs:
     - job: 
       displayName: "Production Approval"
-      pool: server
+      pool: Server
       timeoutInMinutes: 140
       steps:    
       - task: ManualValidation@1
         inputs:
           notifyUsers: 'yadavbrijendra20091994@gmail.com'
-          approvers: 'brijendrayadav2009@gmail.com'
           instructions: 'Please review the Terraform Plan artifact. Approve only if the Terraform changes are expected.'
