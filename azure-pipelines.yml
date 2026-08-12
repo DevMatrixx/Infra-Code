@@ -50,6 +50,13 @@ stages:
           artifactName: 'terraform-configuration'
           itemPattern: 
           targetPath: '$(Pipeline.Workspace)'
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            cd $(Pipeline.Workspace)
+            chmod -R a+rx .terraform/providers
+      
       - task: TerraformTask@5
         displayName: Plan
         inputs:
