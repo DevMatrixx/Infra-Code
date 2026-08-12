@@ -25,6 +25,12 @@ stages:
           backendAzureRmStorageAccountName: 'bkstterraformstate'
           backendAzureRmContainerName: 'tfstate'
           backendAzureRmKey: 'infracodestate.tf'
+      
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: '$(System.DefaultWorkingDirectory)/terraform'
+          artifact: 'terraform-configuration'
+          publishLocation: 'pipeline'
 
       - task: TerraformTask@5
         displayName: Validation
@@ -40,7 +46,7 @@ stages:
           environmentServiceNameAzureRM: 'Docker-VM-Connection'
           environmentAzureRmOverrideSubscriptionID: '0f8f3a03-1fbc-4587-9442-3a42f6948e4e'
           workingDirectory: '$(System.DefaultWorkingDirectory)/Environments/Dev'
-          commandOptions: '-out=$(Build.ArtifactStagingDirectory)/tfplan'
+          commandOptions: '-out=$(System.DefaultWorkingDirectory)/tfplan'
   - stage: Terraform_Code_Scannig
     displayName: Scanning Stage
     dependsOn: Terraform_Initial_Validation
@@ -100,6 +106,6 @@ stages:
       steps:
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(Build.ArtifactStagingDirectory)/tfplan'
+          targetPath: '$(System.DefaultWorkingDirectory)/tfplan'
           artifact: 'terraform-plan'
           publishLocation: 'pipeline'
