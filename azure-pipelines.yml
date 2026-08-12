@@ -21,7 +21,13 @@ stages:
       
       - task: PowerShell@2
         displayName: 'Checkov Terraform Security Scan'
+        continueOnError: true
         inputs:
           targetType: 'inline'
           script: |
             /home/azureuser/.local/bin/checkov -d "$(System.DefaultWorkingDirectory)" --framework terraform
+      - task: PowerShell@2
+        inputs:
+          targetType: 'inline'
+          script: 'gitleaks detect --source "$(System.DefaultWorkingDirectory)" --redact --exit-code 1'
+      
