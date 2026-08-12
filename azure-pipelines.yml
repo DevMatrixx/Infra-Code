@@ -2,9 +2,61 @@ trigger: none
 
 pool: Docker-VM_Pool
 
-stages:
-  - stage:
+stages: 
+  - stage: Terraform_Initial_Validation
+    displayName: Initial
+    jobs:
+    - job: 
+      displayName: Terraform Initial
+      steps:
+      - task: TerraformInstaller@1
+        displayName: Install
+        inputs:
+          terraformVersion: 'latest'
+      - task: TerraformTask@5
+        displayName: Init
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          backendServiceArm: 'TodoAI-Service-Connection'
+          backendAzureRmOverrideSubscriptionID: '0f8f3a03-1fbc-4587-9442-3a42f6948e4e'
+          backendAzureRmResourceGroupName: 'rg-terraform-state'
+          backendAzureRmStorageAccountName: 'bkstterraformstate'
+          backendAzureRmContainerName: 'tfstate'
+          backendAzureRmKey: 'infracodestate.tf'
+
+      - task: TerraformTask@5
+        displayName: Validation
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+      
+      - task: TerraformTask@5
+        displayName: Plan
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          environmentServiceNameAzureRM: 'TodoAI-Service-Connection'
+          environmentAzureRmOverrideSubscriptionID: '0f8f3a03-1fbc-4587-9442-3a42f6948e4e'
+  
+  - stage: Approval
+    displayName: "Production Approval"
+    dependsOn: Terraform_Initial_Validation
+    jobs:
+    - job: 
+      displayName: "Production Approval"
+      pool: server
+      timeoutInMinutes: 140
+      steps:    
+      - task: ManualValidation@1
+        inputs:
+          notifyUsers: 'yadavbrijendra20091994@gmail.com'
+          approvers: 'brijendrayadav2009@gmail.com'
+          instructions: 'Please review the Terraform Plan artifact. Approve only if the Terraform changes are expected.'
+
+  - stage: Terraform_Code_Scannig
     displayName: Scanning Stage
+    dependsOn: Approval
     jobs:
     - job: 
       displayName: Scanning
