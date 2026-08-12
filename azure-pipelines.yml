@@ -1,6 +1,6 @@
 trigger: none
 
-pool: AWSAgnet-Pool
+pool: Docker-VM_Pool
 
 stages:
   - stage:
