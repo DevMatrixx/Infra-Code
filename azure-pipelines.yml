@@ -54,8 +54,8 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            cd $(Pipeline.Workspace)/
-            chmod -R a+rx terraform-configuration/Environments/Dev/.terraform/providers
+            cd $(Pipeline.Workspace)/terraform-configuration/Environments/Dev/
+            chmod -R a+rx /terraform-configuration/Environments/Dev/.terraform/providers
       
       - task: TerraformTask@5
         displayName: Plan
