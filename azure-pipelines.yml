@@ -73,59 +73,6 @@ stages:
             cd $(Pipeline.Workspace)/Environments/Dev
             chmod -R a+rx .terraform/providers
       
-      - task: Bash@3
-        displayName: Debug Terraform
-        inputs:
-          targetType: inline
-          script: |
-            echo "PATH=$PATH"
-
-            echo "Terraform command:"
-            which terraform || true
-
-            echo "Terraform version:"
-            terraform version || true
-
-            echo "Terraform tool directory:"
-            ls -la /home/azureuser/agent/_work/_tool/terraform/1.15.8/ || true
-
-            echo "x64 directory:"
-            ls -la /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/ || true
-
-            echo "Terraform binary:"
-            ls -la /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform || true
-
-            echo "File type:"
-            file /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform || true
-
-            echo "Permissions:"
-            stat /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform || true
-
-
-      - task: Bash@3
-        displayName: Verify Terraform Working Directory
-        inputs:
-          targetType: inline
-          script: |
-            echo "Workspace:"
-            echo "$(Pipeline.Workspace)"
-
-            echo "Expected Terraform directory:"
-            echo "$(Pipeline.Workspace)/terraform-configuration/Environments/Dev"
-
-            echo ""
-            echo "Directory check:"
-            ls -ld "$(Pipeline.Workspace)/terraform-configuration/Environments/Dev"
-
-            echo ""
-            echo "Contents:"
-            ls -la "$(Pipeline.Workspace)/terraform-configuration/Environments/Dev"
-
-            echo ""
-            echo "Direct Terraform execution:"
-            cd "$(Pipeline.Workspace)/terraform-configuration/Environments/Dev"
-            pwd
-            /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform version 
       - task: TerraformTask@5
         displayName: Plan
         inputs:
@@ -133,7 +80,7 @@ stages:
           command: 'plan'
           environmentServiceNameAzureRM: 'Docker-VM-Connection'
           environmentAzureRmOverrideSubscriptionID: '0f8f3a03-1fbc-4587-9442-3a42f6948e4e'
-          workingDirectory: '$(Pipeline.Workspace)/terraform-configuration/Environments/Dev'
+          workingDirectory: '$(Pipeline.Workspace)/Environments/Dev'
       
 
           
