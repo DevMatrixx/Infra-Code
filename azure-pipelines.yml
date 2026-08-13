@@ -100,7 +100,32 @@ stages:
 
             echo "Permissions:"
             stat /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform || true
-            
+
+
+      - task: Bash@3
+        displayName: Verify Terraform Working Directory
+        inputs:
+          targetType: inline
+          script: |
+            echo "Workspace:"
+            echo "$(Pipeline.Workspace)"
+
+            echo "Expected Terraform directory:"
+            echo "$(Pipeline.Workspace)/terraform-configuration/Environments/Dev"
+
+            echo ""
+            echo "Directory check:"
+            ls -ld "$(Pipeline.Workspace)/terraform-configuration/Environments/Dev"
+
+            echo ""
+            echo "Contents:"
+            ls -la "$(Pipeline.Workspace)/terraform-configuration/Environments/Dev"
+
+            echo ""
+            echo "Direct Terraform execution:"
+            cd "$(Pipeline.Workspace)/terraform-configuration/Environments/Dev"
+            pwd
+            /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform version 
       - task: TerraformTask@5
         displayName: Plan
         inputs:
