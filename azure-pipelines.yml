@@ -15,7 +15,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            $(System.DefaultWorkingDirectory)/Environments/Dev
+            cd $(System.DefaultWorkingDirectory)/Environments/Dev
             tflint --init
             tflint --recursive
       - task: TerraformInstaller@1
