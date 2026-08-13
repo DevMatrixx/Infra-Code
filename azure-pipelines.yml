@@ -28,7 +28,7 @@ stages:
       
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/Environments/Dev'
+          targetPath: '$(System.DefaultWorkingDirectory)'
           artifact: 'terraform-configuration'
           publishLocation: 'pipeline'
 
@@ -44,6 +44,11 @@ stages:
       displayName: Terraform Plan
       steps:
 
+      - task: TerraformInstaller@1
+        displayName: Install Terraform
+        inputs:
+          terraformVersion: 'latest'
+
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
@@ -54,7 +59,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            cd $(Pipeline.Workspace)
+            cd $(Pipeline.Workspace)/terraform-configuration/Environments/Dev
             chmod -R a+rx .terraform/providers
       
       - task: TerraformTask@5
@@ -64,7 +69,7 @@ stages:
           command: 'plan'
           environmentServiceNameAzureRM: 'Docker-VM-Connection'
           environmentAzureRmOverrideSubscriptionID: '0f8f3a03-1fbc-4587-9442-3a42f6948e4e'
-          workingDirectory: '$(Pipeline.Workspace)'
+          workingDirectory: '$(Pipeline.Workspace)/terraform-configuration/Environments/Dev'
       
 
           
