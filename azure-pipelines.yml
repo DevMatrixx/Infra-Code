@@ -54,12 +54,6 @@ stages:
     - job:
       displayName: Terraform Plan
       steps:
-
-      - task: TerraformInstaller@1
-        displayName: Install Terraform
-        inputs:
-          terraformVersion: 'latest'
-
       - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'current'
@@ -143,6 +137,7 @@ stages:
       steps:
       - task: PublishPipelineArtifact@1
         inputs:
-          targetPath: '$(System.DefaultWorkingDirectory)/terraform'
+          targetPath: '$(Pipeline.Workspace)/Environments/Dev'
           artifact: 'terraform-plan'
           publishLocation: 'pipeline'
+      
