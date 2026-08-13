@@ -70,7 +70,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            cd $(Pipeline.Workspace)/terraform-configuration/Environments/Dev
+            cd $(Pipeline.Workspace)/Environments/Dev
             chmod -R a+rx .terraform/providers
       
       - task: TerraformTask@5
