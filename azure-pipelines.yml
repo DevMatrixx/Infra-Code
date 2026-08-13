@@ -73,6 +73,34 @@ stages:
             cd $(Pipeline.Workspace)/Environments/Dev
             chmod -R a+rx .terraform/providers
       
+      - task: Bash@3
+        displayName: Debug Terraform
+        inputs:
+          targetType: inline
+          script: |
+            echo "PATH=$PATH"
+
+            echo "Terraform command:"
+            which terraform || true
+
+            echo "Terraform version:"
+            terraform version || true
+
+            echo "Terraform tool directory:"
+            ls -la /home/azureuser/agent/_work/_tool/terraform/1.15.8/ || true
+
+            echo "x64 directory:"
+            ls -la /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/ || true
+
+            echo "Terraform binary:"
+            ls -la /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform || true
+
+            echo "File type:"
+            file /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform || true
+
+            echo "Permissions:"
+            stat /home/azureuser/agent/_work/_tool/terraform/1.15.8/x64/terraform || true
+            
       - task: TerraformTask@5
         displayName: Plan
         inputs:
